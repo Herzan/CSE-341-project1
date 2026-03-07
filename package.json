@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/Herzan/CSE-341-project1#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongodb": "^7.1.0"
   }
 }
