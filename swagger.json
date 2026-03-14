@@ -5,7 +5,7 @@
     "description": "Users API for managing user records",
     "version": "1.0.0"
   },
-  "host": "https://project1-8r7q.onrender.com/",
+  "host": "localhost:3001",
   "basePath": "/",
   "schemes": ["http"],
   "paths": {
