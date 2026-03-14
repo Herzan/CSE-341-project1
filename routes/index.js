@@ -1,10 +1,12 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 
-router.use('/users', require('./users'));
+router.use('/', require('./swagger'));
 
 router.get('/', (req, res) => {
-  res.send('Welcome to Project 1 API');
+    //@swagger.tags=['Hello World']
+    res.send('Hello World');
 });
+
+router.use('/users', require('./users'));
 
 module.exports = router;
