@@ -28,14 +28,53 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "Users retrieved successfully"
+            "description": "Users retrieved successfully",
+            "examples": {
+              "application/json": [
+                {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "john@email.com",
+                  "favoriteColor": "Blue",
+                  "birthday": "1995-01-01"
+                },
+                {
+                  "firstName": "Maria",
+                  "lastName": "Lopez",
+                  "email": "maria@email.com",
+                  "favoriteColor": "Red",
+                  "birthday": "1992-05-20"
+                },
+                {
+                  "firstName": "Carlos",
+                  "lastName": "Perez",
+                  "email": "carlos@email.com",
+                  "favoriteColor": "Green",
+                  "birthday": "1990-03-10"
+                },
+                {
+                  "firstName": "Ana",
+                  "lastName": "Gomez",
+                  "email": "ana@email.com",
+                  "favoriteColor": "Purple",
+                  "birthday": "1998-11-12"
+                },
+                {
+                  "firstName": "David",
+                  "lastName": "Smith",
+                  "email": "david@email.com",
+                  "favoriteColor": "Black",
+                  "birthday": "1994-06-18"
+                }
+              ]
+            }
           }
         }
       },
 
       "post": {
         "tags": ["Users"],
-        "description": "Create a new user. Example records used in the database are shown below.",
+        "description": "Create a new user",
         "parameters": [
           {
             "name": "body",
@@ -71,13 +110,6 @@
                   "type": "string",
                   "example": "1995-01-01"
                 }
-              },
-              "example": {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@email.com",
-                "favoriteColor": "Blue",
-                "birthday": "1995-01-01"
               }
             }
           }
