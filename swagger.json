@@ -35,7 +35,7 @@
 
       "post": {
         "tags": ["Users"],
-        "description": "Create a new user",
+        "description": "Create a new user. Example records used in the database are shown below.",
         "parameters": [
           {
             "name": "body",
@@ -71,6 +71,13 @@
                   "type": "string",
                   "example": "1995-01-01"
                 }
+              },
+              "example": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "john@email.com",
+                "favoriteColor": "Blue",
+                "birthday": "1995-01-01"
               }
             }
           }
@@ -126,11 +133,11 @@
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": { "example": "John" },
-                "lastName": { "example": "Doe" },
-                "email": { "example": "john@email.com" },
-                "favoriteColor": { "example": "Blue" },
-                "birthday": { "example": "1995-01-01" }
+                "firstName": { "example": "Maria" },
+                "lastName": { "example": "Lopez" },
+                "email": { "example": "maria@email.com" },
+                "favoriteColor": { "example": "Red" },
+                "birthday": { "example": "1992-05-20" }
               }
             }
           }
