@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Contacts API",
-    "description": "API for managing contacts",
+    "title": "Users API",
+    "description": "Users API for managing user records",
     "version": "1.0.0"
   },
   "host": "project1-8r7q.onrender.com",
@@ -12,8 +12,7 @@
 
     "/": {
       "get": {
-        "tags": ["Test"],
-        "description": "Test route to verify the API is running",
+        "description": "Test route",
         "responses": {
           "200": {
             "description": "API working"
@@ -23,33 +22,24 @@
     },
 
     "/users": {
-
       "get": {
-        "tags": ["Contacts"],
-        "summary": "Get all contacts",
-        "description": "Returns a list of all contacts in the database",
+        "tags": ["Users"],
+        "description": "Get all users",
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "Contacts retrieved successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
+            "description": "Users retrieved successfully"
           }
         }
       },
 
       "post": {
-        "tags": ["Contacts"],
-        "summary": "Create a new contact",
-        "description": "Adds a new contact to the MongoDB database",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "tags": ["Users"],
+        "description": "Create a new user",
         "parameters": [
           {
             "name": "body",
             "in": "body",
-            "description": "Contact object that needs to be added",
             "required": true,
             "schema": {
               "type": "object",
@@ -87,10 +77,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Contact created successfully"
-          },
-          "400": {
-            "description": "Invalid input"
+            "description": "User created successfully"
           },
           "500": {
             "description": "Internal Server Error"
@@ -100,93 +87,57 @@
     },
 
     "/users/{id}": {
-
       "get": {
-        "tags": ["Contacts"],
-        "summary": "Get a contact by ID",
-        "description": "Returns a single contact based on the provided ID",
+        "tags": ["Users"],
+        "description": "Get a single user by ID",
         "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "MongoDB contact ID",
             "required": true,
-            "type": "string",
-            "example": "65fd2c9d6f21a5b30a8e1a01"
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Contact retrieved successfully"
+            "description": "User retrieved successfully"
           },
           "404": {
-            "description": "Contact not found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+            "description": "User not found"
           }
         }
       },
 
       "put": {
-        "tags": ["Contacts"],
-        "summary": "Update a contact",
-        "description": "Updates an existing contact using the provided ID",
-        "consumes": ["application/json"],
+        "tags": ["Users"],
+        "description": "Update an existing user",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "MongoDB contact ID",
             "required": true,
             "type": "string"
           },
           {
             "name": "body",
             "in": "body",
-            "description": "Updated contact object",
             "required": true,
             "schema": {
               "type": "object",
-              "required": [
-                "firstName",
-                "lastName",
-                "email",
-                "favoriteColor",
-                "birthday"
-              ],
               "properties": {
-                "firstName": {
-                  "type": "string",
-                  "example": "Maria"
-                },
-                "lastName": {
-                  "type": "string",
-                  "example": "Lopez"
-                },
-                "email": {
-                  "type": "string",
-                  "example": "maria@email.com"
-                },
-                "favoriteColor": {
-                  "type": "string",
-                  "example": "Red"
-                },
-                "birthday": {
-                  "type": "string",
-                  "example": "1992-05-20"
-                }
+                "firstName": { "example": "John" },
+                "lastName": { "example": "Doe" },
+                "email": { "example": "john@email.com" },
+                "favoriteColor": { "example": "Blue" },
+                "birthday": { "example": "1995-01-01" }
               }
             }
           }
         ],
         "responses": {
           "204": {
-            "description": "Contact updated successfully"
-          },
-          "404": {
-            "description": "Contact not found"
+            "description": "User updated"
           },
           "500": {
             "description": "Internal Server Error"
@@ -195,24 +146,22 @@
       },
 
       "delete": {
-        "tags": ["Contacts"],
-        "summary": "Delete a contact",
-        "description": "Deletes a contact using the provided ID",
+        "tags": ["Users"],
+        "description": "Delete a user",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "MongoDB contact ID",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "204": {
-            "description": "Contact deleted successfully"
+            "description": "User deleted"
           },
           "404": {
-            "description": "Contact not found"
+            "description": "User not found"
           },
           "500": {
             "description": "Internal Server Error"
