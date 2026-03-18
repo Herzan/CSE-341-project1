@@ -1,45 +1,60 @@
 const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
-// GET all users
+// GET all contacts
 const getAll = async (req, res) => {
   try {
-    const result = await mongodb.getDatabase().db().collection('users').find();
-    const users = await result.toArray();
+    const result = await mongodb
+      .getDatabase()
+      .db()
+      .collection('contacts')
+      .find();
+
+    const contacts = await result.toArray();
 
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(users);
+    res.status(200).json(contacts);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving users', error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving contacts', error: error.message });
   }
 };
 
-// GET single user
+// GET single contact
 const getSingle = async (req, res) => {
-  //#swagger.tags=['Users']
+  // #swagger.tags=['Contacts']
   try {
-    const userId = new ObjectId(req.params.id);
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid contact ID format' });
+    }
+
+    const contactId = new ObjectId(req.params.id);
 
     const result = await mongodb
       .getDatabase()
       .db()
-      .collection('users')
-      .find({ _id: userId });
+      .collection('contacts')
+      .find({ _id: contactId });
 
-    const users = await result.toArray();
+    const contact = (await result.toArray())[0];
+
+    if (!contact) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
 
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(users[0]);
+    res.status(200).json(contact);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving user', error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving contact', error: error.message });
   }
 };
 
-// CREATE user
-const createUser = async (req, res) => {
-  //#swagger.tags=['Users']
+// CREATE contact
+const createContact = async (req, res) => {
+  // #swagger.tags=['Contacts']
   try {
-    const user = {
+    const contact = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
@@ -47,29 +62,42 @@ const createUser = async (req, res) => {
       birthday: req.body.birthday
     };
 
+    // Basic validation
+    if (!contact.firstName || !contact.lastName || !contact.email) {
+      return res.status(400).json({ message: 'firstName, lastName, and email are required' });
+    }
+
     const response = await mongodb
       .getDatabase()
       .db()
-      .collection('users')
-      .insertOne(user);
+      .collection('contacts')
+      .insertOne(contact);
 
     if (response.acknowledged) {
-      res.status(201).json({ message: 'User created', id: response.insertedId });
+      res.status(201).json({
+        message: 'Contact created successfully',
+        id: response.insertedId
+      });
     } else {
-      res.status(500).json({ message: 'User could not be created' });
+      res.status(500).json({ message: 'Contact could not be created' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error creating user', error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Error creating contact', error: error.message });
   }
 };
 
-// UPDATE user
-const updateUser = async (req, res) => {
-  //#swagger.tags=['Users']
+// UPDATE contact
+const updateContact = async (req, res) => {
+  // #swagger.tags=['Contacts']
   try {
-    const userId = new ObjectId(req.params.id);
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid contact ID format' });
+    }
 
-    const user = {
+    const contactId = new ObjectId(req.params.id);
+
+    const contact = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
@@ -80,45 +108,55 @@ const updateUser = async (req, res) => {
     const response = await mongodb
       .getDatabase()
       .db()
-      .collection('users')
-      .replaceOne({ _id: userId }, user);
+      .collection('contacts')
+      .replaceOne({ _id: contactId }, contact);
+
+    if (response.matchedCount === 0) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
 
     if (response.modifiedCount > 0) {
       res.status(204).send();
     } else {
-      res.status(404).json({ message: 'User not found or no changes made' });
+      res.status(200).json({ message: 'Contact found but no changes were made' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error updating user', error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Error updating contact', error: error.message });
   }
 };
 
-// DELETE user
-const deleteUser = async (req, res) => {
-  //#swagger.tags=['Users']
+// DELETE contact
+const deleteContact = async (req, res) => {
+  // #swagger.tags=['Contacts']
   try {
-    const userId = new ObjectId(req.params.id);
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid contact ID format' });
+    }
+
+    const contactId = new ObjectId(req.params.id);
 
     const response = await mongodb
       .getDatabase()
       .db()
-      .collection('users')
-      .deleteOne({ _id: userId });
+      .collection('contacts')
+      .deleteOne({ _id: contactId });
 
     if (response.deletedCount > 0) {
       res.status(204).send();
     } else {
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: 'Contact not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting user', error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Error deleting contact', error: error.message });
   }
 };
 
 module.exports = {
   getAll,
   getSingle,
-  createUser,
-  updateUser,
-  deleteUser
+  createContact,
+  updateContact,
+  deleteContact
 };

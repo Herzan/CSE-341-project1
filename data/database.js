@@ -11,24 +11,28 @@ const initDb = (callback) => {
     return callback(null, database);
   }
 
-  MongoClient.connect(process.env.MONGOOB_URL)
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    return callback(new Error('MONGODB_URI not found in .env'));
+  }
+
+  MongoClient.connect(uri)
     .then((client) => {
       database = client;
+      console.log('Database connected successfully');
       callback(null, database);
     })
     .catch((err) => {
+      console.error('Database connection failed:', err);
       callback(err);
     });
 };
 
 const getDatabase = () => {
   if (!database) {
-    throw Error('Database not initialized');
+    throw new Error('Database not initialized. Call initDb first.');
   }
   return database;
 };
 
-module.exports = {
-  initDb,
-  getDatabase
-};
+module.exports = { initDb, getDatabase };

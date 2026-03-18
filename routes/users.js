@@ -1,20 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const contactsController = require('../controllers/users'); // update path if you rename file
 
-const usersController = require('../controllers/users');
-
-router.get('/', usersController.getAll);
-
-router.get('/:id', usersController.getSingle);
-
-router.post('/', usersController.createUser);
-
-router.put('/:id', usersController.updateUser);
-
-router.delete('/:id', usersController.deleteUser);
+router.get('/', contactsController.getAll);
+router.get('/:id', contactsController.getSingle);
+router.post('/', contactsController.createContact);
+router.put('/:id', contactsController.updateContact);
+router.delete('/:id', contactsController.deleteContact);
 
 module.exports = router;
-
-
-//https://project1-8r7q.onrender.com/
-//https://github.com/Herzan/CSE-341-project1
