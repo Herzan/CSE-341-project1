@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ### Update (use real ID)
-PUT http://localhost:3001/contacts/69bdb179529208ea3f86ba2c
+PUT http://localhost:3001/contacts/69bdb435529208ea3f86ba2f
 Content-Type: application/json
 
 {
@@ -31,4 +31,4 @@ Content-Type: application/json
 }
 
 ### Delete
-DELETE http://localhost:3001/contacts/69bdb179529208ea3f86ba2c
+DELETE http://localhost:3001/contacts/69bdb372529208ea3f86ba2e
