@@ -97,32 +97,46 @@ const updateContact = async (req, res) => {
 
     const contactId = new ObjectId(req.params.id);
 
-    const contact = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      favoriteColor: req.body.favoriteColor,
-      birthday: req.body.birthday
-    };
+    // Build only the fields that were actually sent
+    const updateFields = {};
+
+    const allowed = ['firstName', 'lastName', 'email', 'favoriteColor', 'birthday'];
+
+    allowed.forEach(field => {
+      if (req.body[field] !== undefined) {  // allows null / "" intentionally
+        updateFields[field] = req.body[field];
+      }
+    });
+
+    // If nothing was sent → reject early
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({ message: 'No fields provided to update' });
+    }
 
     const response = await mongodb
       .getDatabase()
       .db()
       .collection('contacts')
-      .replaceOne({ _id: contactId }, contact);
+      .updateOne(
+        { _id: contactId },
+        { $set: updateFields }
+      );
 
     if (response.matchedCount === 0) {
       return res.status(404).json({ message: 'Contact not found' });
     }
 
-    if (response.modifiedCount > 0) {
-      res.status(204).send();
-    } else {
-      res.status(200).json({ message: 'Contact found but no changes were made' });
+    if (response.modifiedCount === 0) {
+      return res.status(200).json({ 
+        message: 'Contact found, but no actual changes (same values sent?)' 
+      });
     }
+
+    res.status(204).send();  // success with changes
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error updating contact', error: error.message });
+    console.error('Update error:', error);
+    res.status(500).json({ message: 'Server error updating contact', error: error.message });
   }
 };
 
