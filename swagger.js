@@ -5,16 +5,25 @@ const doc = {
     title: 'Contacts API',
     description: 'CSE 341 - Contacts Management API'
   },
-  host: 'project1-8r7q.onrender.com',   // ← your Render URL
+  host: 'project1-8r7q.onrender.com',
   schemes: ['https'],
   tags: [
     { name: 'Contacts', description: 'Operations about contacts' }
   ]
 };
 
-const outputFile = './swagger-output.json';   // ← better name
-const endpointsFiles = ['./routes/index.js'];
+// ────────────────────────────────────────────────
+// Important: point to file(s) that contain the route handlers + #swagger comments
+// ────────────────────────────────────────────────
+const outputFile = './swagger.json';           // match what your swagger-ui serves
+
+const endpointsFiles = ['./controllers/contacts.js'];
+
 
 swaggerAutogen(outputFile, endpointsFiles, doc)
-  .then(() => console.log('Swagger JSON generated'))
-  .catch(err => console.error('Swagger generation failed:', err));
+  .then(() => {
+    console.log('✅ Swagger JSON generated successfully → check swagger.json');
+  })
+  .catch(err => {
+    console.error('Swagger generation failed:', err);
+  });

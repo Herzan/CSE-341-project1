@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const contactsController = require('../controllers/users'); // update path if you rename file
+const contactsController = require('../controllers/contacts'); // update path if you rename file
 
 router.get('/', contactsController.getAll);
 router.get('/:id', contactsController.getSingle);
